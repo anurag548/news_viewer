@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "135701861257",
+    "project_id": "covidnewsapp-47633",
+    "storage_bucket": "covidnewsapp-47633.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135701861257:android:2f0b4ed19138e72e11c758",
+        "android_client_info": {
+          "package_name": "com.example.news_viewer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135701861257-641jqesimo8k13fgtdt1tnq9mqpleg7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.news_viewer",
+            "certificate_hash": "cc75102e3dff25003e1c8f8046b77c2698a99a25"
+          }
+        },
+        {
+          "client_id": "135701861257-jheooo9s8o8sc869cdhqsv7stft041kj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAxOtPlgMH-MDVkx8ckNvj9QikhbjDW2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135701861257-jheooo9s8o8sc869cdhqsv7stft041kj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

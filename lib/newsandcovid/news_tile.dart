@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class NewsTile extends StatelessWidget {
   String title, description, content, url, imageUrl;
-  NewsTile(this.title, this.description, this.content, this.url, this.imageUrl);
+  NewsTile(
+      {required this.title,
+      required this.description,
+      required this.content,
+      required this.url,
+      required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +56,13 @@ class NewsTile extends StatelessWidget {
                     style: const TextStyle(color: Colors.black54, fontSize: 14),
                   ),
                   Row(
-                    children: const <Widget>[
-                      SizedBox(
+                    children: <Widget>[
+                      const SizedBox(
                         width: 325,
                       ),
-                      IconButton(onPressed: null, icon: Icon(Icons.star_border))
+                      IconButton(
+                          onPressed: () => {print('Added to favs')},
+                          icon: const Icon(Icons.star_border))
                     ],
                   )
                 ]),

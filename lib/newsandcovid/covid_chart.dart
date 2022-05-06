@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_viewer/newsandcovid/drawer_menu.dart';
+import 'package:news_viewer/newsandcovid/make_chart.dart';
+//import 'package:news_viewer/newsandcovid/drawer_menu.dart';
 
 class CovidChart extends StatefulWidget {
   const CovidChart({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _CovidChartState extends State<CovidChart> {
         title: Text('Covid Details'),
         centerTitle: true,
       ),
+      body: MakeChart(),
     );
   }
 }

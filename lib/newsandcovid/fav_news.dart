@@ -26,10 +26,9 @@ class _FavNewsState extends State<FavNews> {
         centerTitle: true,
       ),
       body: ListView.builder(
-          itemCount: 3,
+          itemCount: 2,
           itemBuilder: ((context, index) {
-            return NewsTile(
-                title[index], desc[index], content[index], url, imageURL);
+            return SizedBox(height: 10);
           })),
     );
   }
