@@ -19,16 +19,17 @@ class _NewsRoomState extends State<NewsRoom> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
-      drawer: const DrawerMenu(),
-      appBar: AppBar(title: const Text('News')),
-      //TODO: Make a list of Api to builld the news
-      body: ListView.builder(
-          itemCount: 2,
-          itemBuilder: (context, index) {
-            return NewsTile(
-                title[index], desc[index], content[index], url, imageURL);
-          }),
-    ));
+          drawer: const DrawerMenu(),
+          appBar: AppBar(title: const Text('News')),
+          //TODO: Make a list of Api to builld the news
+          body: ListView.builder(
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return NewsTile(
+                    title[index], desc[index], content[index], url, imageURL);
+              }),
+        ));
   }
 }
