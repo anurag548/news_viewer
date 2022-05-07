@@ -1,42 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:news_viewer/models/covid_chart_data.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MakeChart extends StatelessWidget {
+class MakeChart extends StatefulWidget {
   MakeChart({Key? key}) : super(key: key);
 
-  List<Data> _chartData = [
-    Data(2017, 25),
-    Data(2018, 30),
-    Data(2019, 32),
-    Data(2020, 22),
-    Data(2021, 26),
-    Data(2022, 25),
-    Data(2023, 27),
-    Data(2024, 29),
-  ];
+  State<MakeChart> createState() => _MakeChartState();
+}
+
+class _MakeChartState extends State<MakeChart> {
+  List<Data> _chartData = <Data>[];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    getChartData();
+    super.initState();
+  }
+
+  getChartData() async {
+    CovidData cd = CovidData();
+    await cd.getData();
+    _chartData = cd.gotdata;
+    setState(() {
+      _isLoading = false;
+    });
+    print((Data dd) => dd.dateymd);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
             padding: EdgeInsets.all(12),
             child: Container(
-              // constraints: BoxConstraints(
-              //   maxHeight: 200,
-              //   maxWidth: 200,
-              // ),
-              //color: Colors.amber,
-              child: SfCartesianChart(series: <ChartSeries>[
-                LineSeries<Data, double>(
-                    dataSource: _chartData,
-                    xValueMapper: (Data sales, _) => sales.year,
-                    yValueMapper: (Data sales, _) => sales.sales),
-              ]),
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : SfCartesianChart(
+                      zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
+                      primaryXAxis: CategoryAxis(visibleMinimum: 10),
+                      series: <ChartSeries>[
+                        LineSeries<Data, String>(
+                            dataSource: _chartData,
+                            xValueMapper: (Data cd, _) => cd.dateymd,
+                            yValueMapper: (Data cd, _) => cd.totalConfirmed),
+                        LineSeries<Data, String>(
+                            dataSource: _chartData,
+                            xValueMapper: (Data cd, _) => cd.dateymd,
+                            yValueMapper: (Data cd, _) => cd.totalDeceased),
+                        LineSeries<Data, String>(
+                            dataSource: _chartData,
+                            xValueMapper: (Data cd, _) => cd.dateymd,
+                            yValueMapper: (Data cd, _) => cd.totalRecovered),
+                      ],
+                    ),
             )));
   }
-}
-
-class Data {
-  final double year;
-  final double sales;
-  Data(this.year, this.sales);
 }

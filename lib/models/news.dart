@@ -3,8 +3,6 @@ import 'dart:core';
 
 class News {
   List<ArticleModel> news = [];
-  var totalResults;
-
   getNews() async {
     var response = await BaseClient().get(
         'https://newsapi.org/v2/top-headlines?country=us&apiKey=',
@@ -12,7 +10,6 @@ class News {
     //print(response);
 
     if (response['status'] == 'ok') {
-      totalResults = response['totalResults'];
       response["articles"].forEach((elements) {
         if (elements['urlToImage'] != null &&
             elements['description'] != null &&

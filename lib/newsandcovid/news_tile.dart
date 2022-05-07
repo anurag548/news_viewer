@@ -57,8 +57,8 @@ class NewsTile extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      const SizedBox(
-                        width: 325,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 90,
                       ),
                       IconButton(
                           onPressed: () => {print('Added to favs')},
