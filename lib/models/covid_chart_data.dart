@@ -14,7 +14,7 @@ class CovidData {
               int.parse(element['totalconfirmed']),
               int.parse(element['totalrecovered']),
               int.parse(element['totaldeceased']),
-              element['dateymd']);
+              DateTime.parse(element['dateymd']));
           gotdata.add(data);
         }
       });
@@ -28,7 +28,7 @@ class Data {
   int totalRecovered;
   int totalConfirmed;
   int totalDeceased;
-  String dateymd;
+  DateTime dateymd;
   Data(this.totalConfirmed, this.totalRecovered, this.totalDeceased,
       this.dateymd);
 }

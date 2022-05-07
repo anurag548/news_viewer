@@ -38,20 +38,47 @@ class _MakeChartState extends State<MakeChart> {
                   ? const Center(child: CircularProgressIndicator())
                   : SfCartesianChart(
                       zoomPanBehavior: ZoomPanBehavior(enablePanning: true),
-                      primaryXAxis: CategoryAxis(visibleMinimum: 10),
-                      series: <ChartSeries>[
-                        LineSeries<Data, String>(
-                            dataSource: _chartData,
-                            xValueMapper: (Data cd, _) => cd.dateymd,
-                            yValueMapper: (Data cd, _) => cd.totalConfirmed),
-                        LineSeries<Data, String>(
-                            dataSource: _chartData,
-                            xValueMapper: (Data cd, _) => cd.dateymd,
-                            yValueMapper: (Data cd, _) => cd.totalDeceased),
-                        LineSeries<Data, String>(
-                            dataSource: _chartData,
-                            xValueMapper: (Data cd, _) => cd.dateymd,
-                            yValueMapper: (Data cd, _) => cd.totalRecovered),
+                      primaryYAxis: NumericAxis(interval: 2500000),
+                      primaryXAxis: DateTimeAxis(interval: 1),
+                      series: <ChartSeries<Data, DateTime>>[
+                        AreaSeries<Data, DateTime>(
+                          animationDuration: 3500,
+                          animationDelay: 2000,
+                          dataSource: _chartData,
+                          xValueMapper: (Data cd, _) => cd.dateymd,
+                          yValueMapper: (Data cd, _) => cd.totalConfirmed,
+                          borderGradient: const LinearGradient(colors: <Color>[
+                            Color.fromRGBO(230, 0, 180, 1),
+                            Color.fromRGBO(255, 200, 0, 1)
+                          ], stops: <double>[
+                            0.2,
+                            0.9
+                          ]),
+                        ),
+                        AreaSeries<Data, DateTime>(
+                          dataSource: _chartData,
+                          xValueMapper: (Data cd, _) => cd.dateymd,
+                          yValueMapper: (Data cd, _) => cd.totalRecovered,
+                          borderGradient: const LinearGradient(colors: <Color>[
+                            Color.fromRGBO(230, 0, 180, 1),
+                            Color.fromRGBO(255, 200, 0, 1)
+                          ], stops: <double>[
+                            0.2,
+                            0.9
+                          ]),
+                        ),
+                        AreaSeries<Data, DateTime>(
+                          dataSource: _chartData,
+                          xValueMapper: (Data cd, _) => cd.dateymd,
+                          yValueMapper: (Data cd, _) => cd.totalDeceased,
+                          borderGradient: const LinearGradient(colors: <Color>[
+                            Color.fromRGBO(230, 0, 180, 1),
+                            Color.fromRGBO(255, 200, 0, 1)
+                          ], stops: <double>[
+                            0.2,
+                            0.9
+                          ]),
+                        ),
                       ],
                     ),
             )));
