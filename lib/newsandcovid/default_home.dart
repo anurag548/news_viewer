@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:news_viewer/models/news.dart';
 import 'package:news_viewer/newsandcovid/drawer_menu.dart';
@@ -57,11 +58,25 @@ class _NewsRoomState extends State<NewsRoom> {
                   itemBuilder: (context, index) {
                     return NewsTile(
                         title: articles[index].title,
-                        content: articles[index].content,
                         description: articles[index].decriptions,
                         imageUrl: articles[index].urlToImage,
                         url: articles[index].url);
                   }),
+          // CarouselSlider(
+          //     options: CarouselOptions(height: 400.0),
+          //     items: articles.map((i) {
+          //       return Builder(
+          //         builder: (BuildContext context) {
+          //           return NewsTile(
+          //               title: articles[i].title,
+          //               description: description,
+          //               content: content,
+          //               url: url,
+          //               imageUrl: imageUrl);
+          //         },
+          //       );
+          //     }).toList(),
+          //   )
         ));
   }
 }

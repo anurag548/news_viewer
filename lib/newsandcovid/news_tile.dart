@@ -1,13 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:news_viewer/models/favorites.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NewsTile extends StatelessWidget {
-  String title, description, content, url, imageUrl;
+class NewsTile extends StatefulWidget {
+  String title, description, url, imageUrl;
   NewsTile(
       {required this.title,
       required this.description,
-      required this.content,
       required this.url,
       required this.imageUrl});
+  @override
+  State<StatefulWidget> createState() => _NewsTileState();
+}
+
+class _NewsTileState extends State<NewsTile> {
+  List<Favorites> favorites = <Favorites>[];
+  var ref = FirebaseAuth.instance.currentUser;
+  var appendd;
+  late var passTo = FirebaseFirestore.instance.collection('favorites').doc();
+  String? nameForDoc;
+  addData() {
+    setState(() {
+      appendd = Favorites(
+          widget.description, widget.title, widget.imageUrl, widget.url);
+      if (!favorites.contains(appendd)) {
+        favorites.add(appendd);
+      }
+      favorites.forEach((element) async {
+        await passTo.set({
+          "title": element.title,
+          "ImageURL": element.iurl,
+          "Description": element.description,
+          "url": widget.url
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +61,7 @@ class NewsTile extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image.network(
-                      imageUrl,
+                      widget.imageUrl,
                       height: 200,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -41,7 +70,7 @@ class NewsTile extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  Text(title,
+                  Text(widget.title,
                       maxLines: 2,
                       style: const TextStyle(
                           color: Colors.black54,
@@ -51,7 +80,7 @@ class NewsTile extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    description,
+                    widget.description,
                     maxLines: 2,
                     style: const TextStyle(color: Colors.black54, fontSize: 14),
                   ),
@@ -61,7 +90,9 @@ class NewsTile extends StatelessWidget {
                         width: MediaQuery.of(context).size.width - 90,
                       ),
                       IconButton(
-                          onPressed: () => {print('Added to favs')},
+                          onPressed: () {
+                            addData();
+                          },
                           icon: const Icon(Icons.star_border))
                     ],
                   )

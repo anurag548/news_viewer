@@ -18,6 +18,11 @@ class _CovidChartState extends State<CovidChart> {
         title: Text('Covid Details'),
         centerTitle: true,
       ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.charging_station), label: "EXAM"),
+      ]),
       body: MakeChart(),
     );
   }

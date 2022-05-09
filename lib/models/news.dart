@@ -13,7 +13,6 @@ class News {
       response["articles"].forEach((elements) {
         if (elements['urlToImage'] != null &&
             elements['description'] != null &&
-            elements['author'] != null &&
             elements['url'] != null &&
             elements['title'] != null &&
             elements['content'] != null) {

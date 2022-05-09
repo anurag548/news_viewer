@@ -25,7 +25,7 @@ class _MakeChartState extends State<MakeChart> {
     setState(() {
       _isLoading = false;
     });
-    print((Data dd) => dd.dateymd);
+    //print((Data dd) => dd.dateymd);
   }
 
   @override
@@ -56,6 +56,8 @@ class _MakeChartState extends State<MakeChart> {
                           ]),
                         ),
                         AreaSeries<Data, DateTime>(
+                          animationDuration: 3500,
+                          animationDelay: 2000,
                           dataSource: _chartData,
                           xValueMapper: (Data cd, _) => cd.dateymd,
                           yValueMapper: (Data cd, _) => cd.totalRecovered,
@@ -68,6 +70,8 @@ class _MakeChartState extends State<MakeChart> {
                           ]),
                         ),
                         AreaSeries<Data, DateTime>(
+                          animationDuration: 3500,
+                          animationDelay: 2000,
                           dataSource: _chartData,
                           xValueMapper: (Data cd, _) => cd.dateymd,
                           yValueMapper: (Data cd, _) => cd.totalDeceased,
