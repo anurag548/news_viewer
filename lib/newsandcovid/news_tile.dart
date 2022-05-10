@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_viewer/models/favorites.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsTile extends StatefulWidget {
   String title, description, url, imageUrl;
@@ -18,8 +22,19 @@ class _NewsTileState extends State<NewsTile> {
   List<Favorites> favorites = <Favorites>[];
   var ref = FirebaseAuth.instance.currentUser;
   var appendd;
-  late var passTo = FirebaseFirestore.instance.collection('favorites').doc();
-  String? nameForDoc;
+  late var passTo = FirebaseFirestore.instance
+      .collection('users')
+      .doc(ref!.uid)
+      .collection('favorites')
+      .doc();
+  //String? nameForDoc;
+
+  void initState() {
+    super.initState();
+    // Enable virtual display.
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+  }
+
   addData() {
     setState(() {
       appendd = Favorites(
@@ -41,6 +56,8 @@ class _NewsTileState extends State<NewsTile> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: () => _openUrl(urlToOpen: widget.url),
+      // TODO: Add a function for webview
       child: Container(
         //color: Colors.amber,
         margin: const EdgeInsets.only(bottom: 24),
@@ -90,8 +107,9 @@ class _NewsTileState extends State<NewsTile> {
                         width: MediaQuery.of(context).size.width - 90,
                       ),
                       IconButton(
-                          onPressed: () {
-                            addData();
+                          onPressed: () async {
+                            await addData();
+                            print('Data uploaded');
                           },
                           icon: const Icon(Icons.star_border))
                     ],
@@ -101,5 +119,11 @@ class _NewsTileState extends State<NewsTile> {
         ),
       ),
     );
+  }
+
+  Future _openUrl({required String urlToOpen}) async {
+    if (await canLaunchUrlString(urlToOpen)) {
+      launchUrlString(urlToOpen, mode: LaunchMode.inAppWebView);
+    }
   }
 }

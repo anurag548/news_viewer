@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:news_viewer/login.dart';
 import 'package:news_viewer/newsandcovid/covid_chart.dart';
 import 'package:news_viewer/newsandcovid/default_home.dart';
 import 'package:news_viewer/newsandcovid/fav_news.dart';
@@ -19,7 +21,7 @@ class DrawerMenu extends StatelessWidget {
             ),
             buildMenuItem(
                 displayText: 'News',
-                icon: Icons.newspaper,
+                icon: Icons.newspaper_rounded,
                 onClicked: () => routePage(context, 0)),
             const SizedBox(height: 16),
             buildMenuItem(
@@ -29,9 +31,13 @@ class DrawerMenu extends StatelessWidget {
             const SizedBox(height: 16),
             buildMenuItem(
                 displayText: 'Favourites',
-                icon: Icons.star_border_outlined,
+                icon: Icons.star_border_rounded,
                 onClicked: () => routePage(context, 2)),
             const SizedBox(height: 16),
+            buildMenuItem(
+                displayText: 'Sign Out',
+                icon: Icons.logout_rounded,
+                onClicked: () => signOut(context))
           ],
         ),
       ),
@@ -39,11 +45,18 @@ class DrawerMenu extends StatelessWidget {
   }
 }
 
-Widget buildMenuItem({
-  required String displayText,
-  required IconData icon,
-  VoidCallback? onClicked,
-}) {
+signOut(BuildContext context) async {
+  int count = 0;
+  await FirebaseAuth.instance.signOut();
+  Navigator.pushAndRemoveUntil(
+      context, MaterialPageRoute(builder: (_) => LoginPage()), (r) => false);
+}
+
+Widget buildMenuItem(
+    {required String displayText,
+    required IconData icon,
+    VoidCallback? onClicked,
+    n}) {
   return ListTile(
     leading: Icon(
       icon,

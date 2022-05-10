@@ -16,12 +16,12 @@ class _NewsRoomState extends State<NewsRoom> {
   bool _loading = true;
   List<ArticleModel> articles = <ArticleModel>[];
 
-  var title = ['Title Here', 'TestTitle'];
-  var desc = ['Description her', 'Test Description'];
-  var content = ['Content Here', 'Here Content'];
-  var url = 'Test Url';
-  var imageURL =
-      'https://i.kym-cdn.com/photos/images/original/001/555/449/7ce.jpg';
+  // var title = ['Title Here', 'TestTitle'];
+  // var desc = ['Description her', 'Test Description'];
+  // var content = ['Content Here', 'Here Content'];
+  // var url = 'Test Url';
+  // var imageURL =
+  //     'https://i.kym-cdn.com/photos/images/original/001/555/449/7ce.jpg';
 
   @override
   void initState() {

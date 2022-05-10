@@ -38,7 +38,7 @@ class ArticleModel {
   String url;
   String urlToImage;
   String content;
-  String author;
+  String? author;
 
   ArticleModel(
       {required this.author,

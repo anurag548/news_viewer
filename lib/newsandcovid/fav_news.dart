@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:news_viewer/models/favorites.dart';
@@ -21,9 +22,15 @@ class _FavNewsState extends State<FavNews> {
   //     'https://i.kym-cdn.com/photos/images/original/001/555/449/7ce.jpg';
 
   Future getData() async {
+    var getId = FirebaseAuth.instance.currentUser!.uid;
     var firestore = FirebaseFirestore.instance;
-    QuerySnapshot qn = await firestore.collection('favorites').get();
-    return qn.docs;
+    print(getId);
+    var qn = await firestore
+        .collection('users')
+        .doc(getId)
+        .collection('favorites')
+        .get();
+    return qn;
   }
 
   @override
@@ -31,27 +38,37 @@ class _FavNewsState extends State<FavNews> {
     return FutureBuilder(
         future: getData(),
         builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               //drawer: DrawerMenu(),
               appBar: AppBar(
                 title: Text('Favourites'),
                 centerTitle: true,
               ),
-              // body: ElevatedButton(
-              //   onPressed: () {
-              //     print(snapshot.data[2]['title']);
+              // body: ListView.builder(
+              //   itemBuilder: (context, index) {
+              //     return Text(snapshot.data.docs.elementAt(index).get('title'));
               //   },
-              //   child: Text("No name"),
+              //   itemCount: snapshot.data.docs.length,
+              // ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     print(snapshot.data['title']);
+              //   },
+              // child: Text("No name"),
               // )
               body: ListView.builder(
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data.docs.length,
                   itemBuilder: ((context, index) {
                     return NewsTile(
-                        title: snapshot.data[index]['title'],
-                        description: snapshot.data[index]['Description'],
-                        url: snapshot.data[index]['url'],
-                        imageUrl: snapshot.data[index]['ImageURL']);
+                        title: snapshot.data.docs.elementAt(index).get('title'),
+                        description: snapshot.data.docs
+                            .elementAt(index)
+                            .get('Description'),
+                        url: snapshot.data.docs.elementAt(index).get('url'),
+                        imageUrl: snapshot.data.docs
+                            .elementAt(index)
+                            .get('ImageURL'));
                   })),
             );
           } else {
