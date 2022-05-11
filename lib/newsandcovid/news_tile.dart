@@ -9,11 +9,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsTile extends StatefulWidget {
   String title, description, url, imageUrl;
+  final Function()? favFunc;
+  bool isFavoritePage;
   NewsTile(
       {required this.title,
       required this.description,
       required this.url,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.isFavoritePage,
+      required this.favFunc});
   @override
   State<StatefulWidget> createState() => _NewsTileState();
 }
@@ -27,6 +31,7 @@ class _NewsTileState extends State<NewsTile> {
       .doc(ref!.uid)
       .collection('favorites')
       .doc();
+
   //String? nameForDoc;
 
   void initState() {
@@ -36,12 +41,13 @@ class _NewsTileState extends State<NewsTile> {
   }
 
   addData() {
-    setState(() {
+    setState(() async {
       appendd = Favorites(
           widget.description, widget.title, widget.imageUrl, widget.url);
       if (!favorites.contains(appendd)) {
         favorites.add(appendd);
       }
+
       favorites.forEach((element) async {
         await passTo.set({
           "title": element.title,
@@ -106,12 +112,16 @@ class _NewsTileState extends State<NewsTile> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 90,
                       ),
-                      IconButton(
-                          onPressed: () async {
-                            await addData();
-                            print('Data uploaded');
-                          },
-                          icon: const Icon(Icons.star_border))
+                      widget.isFavoritePage
+                          ? IconButton(
+                              onPressed: () async {
+                                await addData();
+                                print('Data uploaded');
+                              },
+                              icon: const Icon(Icons.star_border))
+                          : IconButton(
+                              onPressed: () => widget.favFunc!(),
+                              icon: Icon(Icons.star_rounded))
                     ],
                   )
                 ]),

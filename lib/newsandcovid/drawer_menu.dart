@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_viewer/login.dart';
@@ -5,8 +6,35 @@ import 'package:news_viewer/newsandcovid/covid_chart.dart';
 import 'package:news_viewer/newsandcovid/default_home.dart';
 import 'package:news_viewer/newsandcovid/fav_news.dart';
 
-class DrawerMenu extends StatelessWidget {
-  const DrawerMenu({Key? key}) : super(key: key);
+var email;
+var name;
+
+class DrawerMenu extends StatefulWidget {
+  DrawerMenu({Key? key}) : super(key: key);
+  @override
+  State<StatefulWidget> createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
+  void initState() {
+    getNameandEmail();
+    super.initState();
+  }
+
+  getNameandEmail() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      var fields = value.data();
+
+      email = fields?['Email'];
+      name = fields?['name'];
+    });
+    print(name);
+    print(email);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +42,15 @@ class DrawerMenu extends StatelessWidget {
       child: Material(
         child: ListView(
           children: <Widget>[
-            const UserAccountsDrawerHeader(
-              accountName: Text('TestName'),
-              accountEmail: Text('test@gmail.com'),
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                name.toString(),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(
+                email.toString(),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               currentAccountPicture: CircleAvatar(),
             ),
             buildMenuItem(
@@ -46,7 +80,6 @@ class DrawerMenu extends StatelessWidget {
 }
 
 signOut(BuildContext context) async {
-  int count = 0;
   await FirebaseAuth.instance.signOut();
   Navigator.pushAndRemoveUntil(
       context, MaterialPageRoute(builder: (_) => LoginPage()), (r) => false);

@@ -43,7 +43,7 @@ class _NewsRoomState extends State<NewsRoom> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          drawer: const DrawerMenu(),
+          drawer: DrawerMenu(),
           appBar: AppBar(title: const Text('News')),
           // //TODO: Make a list of Api to builld the news
           // body: Center(
@@ -57,10 +57,13 @@ class _NewsRoomState extends State<NewsRoom> {
                   itemCount: articles.length,
                   itemBuilder: (context, index) {
                     return NewsTile(
-                        title: articles[index].title,
-                        description: articles[index].decriptions,
-                        imageUrl: articles[index].urlToImage,
-                        url: articles[index].url);
+                      title: articles[index].title,
+                      description: articles[index].decriptions,
+                      imageUrl: articles[index].urlToImage,
+                      url: articles[index].url,
+                      isFavoritePage: true,
+                      favFunc: null,
+                    );
                   }),
           // CarouselSlider(
           //     options: CarouselOptions(height: 400.0),

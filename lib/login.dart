@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:news_viewer/newsandcovid/default_home.dart';
@@ -29,71 +29,81 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const CircleAvatar(
-                      maxRadius: 90.0, backgroundColor: Colors.amber),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  isRegstered
-                      ? TextFormField(
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              label: const Text('Name'),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.auto),
-                        )
-                      : const SizedBox(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        label: const Text('Email'),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        label: const Text('Password'),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  isRegstered
-                      ? ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black)),
-                          onPressed: _registerUser,
-                          child: const Text('Register'))
-                      : ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black)),
-                          onPressed: _loginUser,
-                          child: const Text('Login'))
-                ]),
-          )),
+      body: Center(
+        child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CircleAvatar(
+                      maxRadius: 90.0,
+                      backgroundImage: AssetImage("images/logo.png"),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    isRegstered
+                        ? TextFormField(
+                            keyboardType: TextInputType.name,
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                label: const Text('Name'),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto),
+                          )
+                        : const SizedBox(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          label: const Text('Email'),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      autocorrect: false,
+                      obscureText: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          label: const Text('Password'),
+                          floatingLabelBehavior: FloatingLabelBehavior.auto),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    isRegstered
+                        ? ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black)),
+                            onPressed: _registerUser,
+                            child: const Text('Register'))
+                        : ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.black)),
+                            onPressed: _loginUser,
+                            child: const Text('Login'))
+                  ]),
+            )),
+      ),
     );
   }
 

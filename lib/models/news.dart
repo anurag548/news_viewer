@@ -5,7 +5,7 @@ class News {
   List<ArticleModel> news = [];
   getNews() async {
     var response = await BaseClient().get(
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=',
+        'https://newsapi.org/v2/top-headlines?country=in&apiKey=',
         'b0dd779723ea4f569aa9c5c794a04594');
     //print(response);
 
