@@ -60,25 +60,24 @@ class _NewsTileState extends State<NewsTile> {
       //   });
       // });
     });
-    if (checkExistingNews()) {
-      print('true');
-    }
-
-    // var qs = await passTo.get().then((value) => (value.docs.forEach((element) {
-    //       print(element['title'] == widget.title);
-    //     })));
+    var qs = await passTo.get().then((value) => (value.docs.forEach((element) {
+          if (element['title'] == widget.title) {}
+        })));
+    // if (checkExistingNews()) {
+    //   print('true');
+    // }
   }
 
-  checkExistingNews() async {
-    bool checkVal = false;
-    var qs = await passTo.get();
-    qs.docs.forEach((element) {
-      if (element['title'] == widget.title) {
-        checkVal = true;
-      }
-    });
-    return checkVal;
-  }
+  // checkExistingNews() async {
+  //   bool checkVal = false;
+  //   var qs = await passTo.get();
+  //   qs.docs.forEach((element) {
+  //     if (element['title'] == widget.title) {
+  //       checkVal = true;
+  //     }
+  //   });
+  //   return checkVal;
+  // }
 
   @override
   Widget build(BuildContext context) {
