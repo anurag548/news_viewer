@@ -23,14 +23,15 @@ class NewsTile extends StatefulWidget {
 }
 
 class _NewsTileState extends State<NewsTile> {
+  bool isFavNew = false;
+
   List<Favorites> favorites = <Favorites>[];
   var ref = FirebaseAuth.instance.currentUser;
   var appendd;
   late var passTo = FirebaseFirestore.instance
       .collection('users')
       .doc(ref!.uid)
-      .collection('favorites')
-      .doc();
+      .collection('favorites');
 
   //String? nameForDoc;
 
@@ -40,23 +41,43 @@ class _NewsTileState extends State<NewsTile> {
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
-  addData() {
-    setState(() async {
+  addData() async {
+    setState(() {
+      //isFavNew = true;
       appendd = Favorites(
           widget.description, widget.title, widget.imageUrl, widget.url);
-      if (!favorites.contains(appendd)) {
-        favorites.add(appendd);
-      }
 
-      favorites.forEach((element) async {
-        await passTo.set({
-          "title": element.title,
-          "ImageURL": element.iurl,
-          "Description": element.description,
-          "url": widget.url
-        });
-      });
+      // if (!favorites.contains(appendd)) {
+      //   favorites.add(appendd);
+      // }
+
+      // favorites.forEach((element) async {
+      //   await passTo.set({
+      //     "title": element.title,
+      //     "ImageURL": element.iurl,
+      //     "Description": element.description,
+      //     "url": widget.url
+      //   });
+      // });
     });
+    if (checkExistingNews()) {
+      print('true');
+    }
+
+    // var qs = await passTo.get().then((value) => (value.docs.forEach((element) {
+    //       print(element['title'] == widget.title);
+    //     })));
+  }
+
+  checkExistingNews() async {
+    bool checkVal = false;
+    var qs = await passTo.get();
+    qs.docs.forEach((element) {
+      if (element['title'] == widget.title) {
+        checkVal = true;
+      }
+    });
+    return checkVal;
   }
 
   @override
@@ -112,16 +133,23 @@ class _NewsTileState extends State<NewsTile> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 90,
                       ),
-                      widget.isFavoritePage
-                          ? IconButton(
-                              onPressed: () async {
-                                await addData();
-                                print('Data uploaded');
-                              },
-                              icon: const Icon(Icons.star_border))
-                          : IconButton(
-                              onPressed: () => widget.favFunc!(),
-                              icon: Icon(Icons.star_rounded))
+                      // widget.isFavoritePage
+                      //     ?
+                      IconButton(
+                          onPressed: () {
+                            addData();
+                            setState(() {
+                              isFavNew = !isFavNew;
+                            });
+                            // addData();
+                            // print('Data uploaded');
+                          },
+                          icon: Icon(isFavNew
+                              ? Icons.star_rounded
+                              : Icons.star_border_rounded))
+                      // : IconButton(
+                      //     onPressed: () => widget.favFunc!(),
+                      //     icon: Icon(Icons.star_rounded))
                     ],
                   )
                 ]),

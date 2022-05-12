@@ -6,6 +6,13 @@ import 'package:news_viewer/models/favorites.dart';
 import 'package:news_viewer/newsandcovid/drawer_menu.dart';
 import 'package:news_viewer/newsandcovid/news_tile.dart';
 
+/*
+
+
+Displays Favorite News by fetching data from firestore
+
+
+*/
 class FavNews extends StatefulWidget {
   const FavNews({Key? key}) : super(key: key);
 
