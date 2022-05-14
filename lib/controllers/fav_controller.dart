@@ -1,12 +1,17 @@
-import 'package:get/get.dart';
-import 'package:news_viewer/models/favorites.dart';
+import 'package:flutter/cupertino.dart';
 
-class FavController extends GetxController {
-  var _favorites = {}.obs;
+class favModel {
+  String? title;
+  String? description;
+  String? url;
+  String? iurl;
+  favModel({this.description, this.title, this.iurl, this.url});
 
-  void addFavorites(Favorites fav) {
-    if (_favorites.containsKey(fav)) {
-      return;
-    }
-  }
+  // factory favModel.fromMap(map) {
+  //   return favModel(
+  //       description: map['Description'],
+  //       title: map['title'],
+  //       iurl: map['iurl'],
+  //       url: map['url']);
+  // }
 }

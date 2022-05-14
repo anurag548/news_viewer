@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:news_viewer/controllers/fav_controller.dart';
 import 'package:news_viewer/models/favorites.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +12,7 @@ class NewsTile extends StatefulWidget {
   String title, description, url, imageUrl;
   final Function()? favFunc;
   bool isFavoritePage;
+
   NewsTile(
       {required this.title,
       required this.description,
@@ -23,6 +25,8 @@ class NewsTile extends StatefulWidget {
 }
 
 class _NewsTileState extends State<NewsTile> {
+  List<Favorites> favsM = <Favorites>[];
+
   bool isFavNew = false;
 
   List<Favorites> favorites = <Favorites>[];
@@ -36,33 +40,74 @@ class _NewsTileState extends State<NewsTile> {
   //String? nameForDoc;
 
   void initState() {
+    getData();
     super.initState();
     // Enable virtual display.
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   addData() async {
-    setState(() {
-      //isFavNew = true;
-      appendd = Favorites(
-          widget.description, widget.title, widget.imageUrl, widget.url);
-
-      // if (!favorites.contains(appendd)) {
-      //   favorites.add(appendd);
-      // }
-
-      // favorites.forEach((element) async {
-      //   await passTo.set({
-      //     "title": element.title,
-      //     "ImageURL": element.iurl,
-      //     "Description": element.description,
-      //     "url": widget.url
-      //   });
-      // });
+    appendd = Favorites(
+        description: widget.description,
+        title: widget.title,
+        iurl: widget.imageUrl,
+        url: widget.url);
+    bool isNewsThere = false;
+    favsM.forEach((element) {
+      if (element.title == appendd.title) {
+        isNewsThere = true;
+        return;
+      }
     });
-    var qs = await passTo.get().then((value) => (value.docs.forEach((element) {
-          if (element['title'] == widget.title) {}
-        })));
+    if (isNewsThere) {
+      setState(() {
+        isFavNew = !isFavNew;
+      });
+
+      favsM.add(appendd);
+      await passTo.doc().set({
+        "title": appendd.title,
+        "ImageURL": appendd.iurl,
+        "Description": appendd.description,
+        "url": appendd.url
+      });
+      print('yes');
+    } else {
+      print('no');
+    }
+    // if (!favsM.contains(appendd)) {
+
+    // }
+  }
+
+  getData() async {
+    var qs = await passTo.get();
+    qs.docs.forEach((element) {
+      var test = Favorites(
+          description: element['Description'],
+          title: element['title'],
+          iurl: element['ImageURL'],
+          url: element['url']);
+      favsM.add(test);
+    });
+    print(favsM);
+    // setState(() {
+    //isFavNew = true;
+
+    // if (!favorites.contains(appendd)) {
+    //   favorites.add(appendd);
+    // }
+
+    // favorites.forEach((element) async {
+    //   await passTo.set({
+    //     "title": element.title,
+    //     "ImageURL": element.iurl,
+    //     "Description": element.description,
+    //     "url": widget.url
+    //   });
+    // });
+    // });
+
     // if (checkExistingNews()) {
     //   print('true');
     // }
@@ -132,23 +177,20 @@ class _NewsTileState extends State<NewsTile> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 90,
                       ),
-                      // widget.isFavoritePage
-                      //     ?
-                      IconButton(
-                          onPressed: () {
-                            addData();
-                            setState(() {
-                              isFavNew = !isFavNew;
-                            });
-                            // addData();
-                            // print('Data uploaded');
-                          },
-                          icon: Icon(isFavNew
-                              ? Icons.star_rounded
-                              : Icons.star_border_rounded))
-                      // : IconButton(
-                      //     onPressed: () => widget.favFunc!(),
-                      //     icon: Icon(Icons.star_rounded))
+                      widget.isFavoritePage
+                          ? IconButton(
+                              onPressed: () {
+                                addData();
+
+                                // addData();
+                                //print('Data uploaded');
+                              },
+                              icon: Icon(isFavNew
+                                  ? Icons.star_rounded
+                                  : Icons.star_border_rounded))
+                          : IconButton(
+                              onPressed: () => widget.favFunc!(),
+                              icon: Icon(Icons.star_rounded))
                     ],
                   )
                 ]),
@@ -159,8 +201,10 @@ class _NewsTileState extends State<NewsTile> {
   }
 
   Future _openUrl({required String urlToOpen}) async {
-    if (await canLaunchUrlString(urlToOpen)) {
-      launchUrlString(urlToOpen, mode: LaunchMode.inAppWebView);
-    }
+    launchUrlString(urlToOpen, mode: LaunchMode.inAppWebView);
+    // if (await canLaunchUrlString(urlToOpen)) {
+
+    //   launchUrlString(urlToOpen, mode: LaunchMode.inAppWebView);
+    // }
   }
 }

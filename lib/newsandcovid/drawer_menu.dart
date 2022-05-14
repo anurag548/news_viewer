@@ -29,11 +29,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
         .then((value) {
       var fields = value.data();
 
-      email = fields?['Email'];
-      name = fields?['name'];
+      setState(() {
+        email = fields?['Email'];
+        //name = fields?['name'];
+      });
     });
-    print(name);
-    print(email);
   }
 
   @override
@@ -43,10 +43,20 @@ class _DrawerMenuState extends State<DrawerMenu> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text(
-                name.toString(),
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
+              accountName: name == null
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      name.toString(),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
               accountEmail: Text(
                 email.toString(),
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
